@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('booking_visitors', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained();
+            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
             $table->string('first_name');
             $table->text('last_name');
             $table->unsignedInteger('abonnement_number')->nullable();
