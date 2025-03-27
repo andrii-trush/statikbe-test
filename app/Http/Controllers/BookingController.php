@@ -19,13 +19,13 @@ class BookingController extends Controller
 {
     public function index(
         VisitorsStatisticAction $visitorsStatistic,
-    ): \Inertia\Response
-    {
+    ): \Inertia\Response {
         return Inertia::render('Booking/Index', []);
     }
 
-    public function store(BookingRequest $request)
+    public function store(BookingRequest $request): \Illuminate\Http\RedirectResponse
     {
+        // Additional validation to check if there's free space for the requested time slot
         $validator = Validator::make($request->all(), [
             'time_slot' => new MaxVisitorsPerTimeslot($request),
         ]);
@@ -53,21 +53,24 @@ class BookingController extends Controller
                 $booking->visitors()->saveMany($visitors);
             });
         } catch (Throwable $e) {
+            // TODO: return UI exception
             throw $e;
         }
 
         return to_route('booking.success')->with('bookingId', $booking->id);
     }
 
-    public function show(Booking $booking)
+    public function show(Booking $booking): \Inertia\Response
     {
         $booking->load('visitors');
+
         return Inertia::render('Booking/Show', compact('booking'));
     }
 
     public function success(Booking $booking, Request $request)
     {
         $bookingId = $request->session()->get('bookingId');
+
         if (empty($bookingId)) {
             return to_route('index');
         }

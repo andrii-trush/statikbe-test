@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class VisitorsStatisticAction
 {
+    /**
+     * Return data for Apexchart
+     */
     public function handle(CarbonInterface $startDate, CarbonInterface $endDate): array
     {
         /** @var Collection $data */
@@ -24,6 +27,7 @@ class VisitorsStatisticAction
 
         $data = collect();
 
+        // For days without visitors set "0"
         do {
             $data->push([
                 'date' => $startDate->toDateString(),

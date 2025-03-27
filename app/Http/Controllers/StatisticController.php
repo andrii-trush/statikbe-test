@@ -14,7 +14,9 @@ class StatisticController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, VisitorsStatisticAction $visitorsStatistic)
+    public function __invoke(
+        Request $request,
+        VisitorsStatisticAction $visitorsStatistic)
     {
         $startDate = $request->filled('start_date') ? Carbon::parse($request->start_date) : now()->startOfMonth();
         $endDate = $request->filled('end_date') ? Carbon::parse($request->end_date) : now()->endOfMonth();

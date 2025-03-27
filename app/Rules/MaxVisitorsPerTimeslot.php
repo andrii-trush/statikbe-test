@@ -33,6 +33,7 @@ class MaxVisitorsPerTimeslot implements ValidationRule
             ->whereBookingEndAt($timeSlots[1] . ':00')
             ->sum('visitor_count');
 
+        // TODO: move "200" to config
         if (($currentLoad + \count($visitors)) > 200) {
             $fail('Max visitors per time slot is reached');
         }

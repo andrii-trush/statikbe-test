@@ -10,7 +10,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class AbonnementNumberRule implements ValidationRule
 {
     /**
-     * Run the validation rule.
+     * Validate AbonnementNumber is follow regex and validate checksum.
      *
      * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
      */
@@ -25,6 +25,7 @@ class AbonnementNumberRule implements ValidationRule
         $base = (int) ($valueElements[0] . $valueElements[1]);
         $checksum = (int) $valueElements[2];
 
+        // TODO: move "98" to config
         if (($base % 98) !== $checksum) {
             $fail('The :attribute is not a valid number.');
         }

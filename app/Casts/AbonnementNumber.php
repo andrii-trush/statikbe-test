@@ -7,12 +7,15 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Transform "abonnement_number" to int
+ */
 class AbonnementNumber implements CastsAttributes
 {
     /**
      * Cast the given value.
      *
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $attributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
@@ -20,7 +23,7 @@ class AbonnementNumber implements CastsAttributes
             return null;
         }
 
-        $value = (string)$value;
+        $value = (string) $value;
 
         return substr($value, 0, 4) . '-' . substr($value, 4, 4) . '-' . substr($value, 8, 2);
     }
@@ -28,7 +31,7 @@ class AbonnementNumber implements CastsAttributes
     /**
      * Prepare the given value for storage.
      *
-     * @param array<string, mixed> $attributes
+     * @param  array<string, mixed>  $attributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
