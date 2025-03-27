@@ -11,7 +11,6 @@ use App\Models\BookingVisitor;
 use App\Rules\MaxVisitorsPerTimeslot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Throwable;
 
@@ -26,15 +25,10 @@ class BookingController extends Controller
     public function store(BookingRequest $request): \Illuminate\Http\RedirectResponse
     {
         // Additional validation to check if there's free space for the requested time slot
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'time_slot' => new MaxVisitorsPerTimeslot($request),
         ]);
 
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput();
-        }
         $booking = null;
         try {
             DB::transaction(function () use ($request, &$booking) {
